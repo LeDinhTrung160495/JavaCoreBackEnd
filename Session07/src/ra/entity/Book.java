@@ -167,7 +167,7 @@ public class Book {
 
     public void displayData() {
         System.out.printf("Mã sách: %s - Tên sách: %s - Tên tác giả: %s\n", this.bookId, this.bookName, this.author);
-        System.out.printf("Giá nhập: %.1f - Giá xuất: %.1f - Lợi nhuận: %.1f - Năm xuất bản: %d\n", this.importPrice, this.exportPrice, this.interest,this.year);
+        System.out.printf("Giá nhập: %.1f - Giá xuất: %.1f - Lợi nhuận: %.1f - Năm xuất bản: %d\n", this.importPrice, this.exportPrice, this.interest, this.year);
     }
 
     public void callInterest() {
