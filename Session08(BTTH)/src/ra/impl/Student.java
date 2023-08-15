@@ -1,5 +1,6 @@
 package ra.impl;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import ra.IStudent;
 
 import java.util.Scanner;
@@ -119,16 +120,16 @@ public class Student implements IStudent {
         boolean checkStudentId = true;
         do {
             this.studentId = scanner.nextLine();
-            boolean isExist = false;
+            boolean isExistStudentId = false;
             for (int i = 0; i < numberStudent; i++) {
-                if (arrStudents[i].getStudentId() == this.studentId) {
-                    isExist = true;
+                if (arrStudents[i].studentId.equals(this.studentId)) {
+                    isExistStudentId = true;
                     break;
                 }
             }
-            if (!isExist) {
+            if (!isExistStudentId) {
                 if (this.studentId.length() == 4) {
-                    if (this.studentId.charAt(0) == 'S' && this.studentId.charAt(1) == 'V') {
+                    if (this.studentId.startsWith("SV")) {
                         break;
                     } else {
                         System.err.println("Vui lòng nhập mã số sinh viên với ký tự bắt đầu là SV");
@@ -149,7 +150,7 @@ public class Student implements IStudent {
             } else {
                 System.err.println("Tên sinh viên từ 6-50 ký tự, vui lòng nhập lại");
             }
-        } while (checkStudentId);
+        } while (checkStudentName);
         System.out.println("Nhập vào tuổi sinh viên: ");
         boolean checkAge = true;
         do {
@@ -160,8 +161,6 @@ public class Student implements IStudent {
                 System.err.println("Tuổi có giá trị lớn hơn hoặc bằng 18, vui lòng nhập lại");
             }
         } while (checkAge);
-        System.out.println("Nhập vào giới tính sinh viên: ");
-        this.sex = Boolean.parseBoolean(scanner.nextLine());
         System.out.println("Nhập vào điểm html: ");
         boolean checkHtml = true;
         do {
@@ -169,7 +168,7 @@ public class Student implements IStudent {
             if (this.htmlScore >= 0 && this.htmlScore <= 10) {
                 break;
             } else {
-                System.err.println("Điểm trong khoảng 0-10, vui lòng nhập lại");
+                System.err.println("Điểm html trong khoảng 0-10, vui lòng nhập lại");
             }
         } while (checkHtml);
         System.out.println("Nhập vào điểm css: ");
@@ -179,7 +178,7 @@ public class Student implements IStudent {
             if (this.cssScore >= 0 && this.cssScore <= 10) {
                 break;
             } else {
-                System.err.println("Điểm trong khoảng 0-10, vui lòng nhập lại");
+                System.err.println("Điểm css trong khoảng 0-10, vui lòng nhập lại");
             }
         } while (checkCss);
         System.out.println("Nhập vào điểm javascript: ");
@@ -189,11 +188,12 @@ public class Student implements IStudent {
             if (this.javascriptScore >= 0 && this.javascriptScore <= 10) {
                 break;
             } else {
-                System.err.println("Điểm trong khoảng 0-10, vui lòng nhập lại");
+                System.err.println("Điểm javascript trong khoảng 0-10, vui lòng nhập lại");
             }
         } while (checkJavascript);
+        System.out.println("Nhập vào giới tính của sinh viên");
+        this.sex=Boolean.parseBoolean(scanner.nextLine());
     }
-
     @Override
     public void displayData() {
         String displaySex = this.sex ? "Nam" : "Nữ";
@@ -204,10 +204,10 @@ public class Student implements IStudent {
 
     @Override
     public void callAvgMark() {
-        this.avgScore = (this.htmlScore + this.cssScore + this.javascriptScore);
+        this.avgScore = (this.htmlScore + this.cssScore + this.javascriptScore)/3;
     }
 
-    public void classificationStudent() {
+    public void callClassificationStudent() {
         if (this.avgScore < 5) {
             this.classification = "Xếp loại yếu";
         } else if (this.avgScore < 7) {
@@ -221,7 +221,7 @@ public class Student implements IStudent {
         }
     }
 
-    public void statusStudent() {
+    public void callStatusStudent() {
         if (this.avgScore >= MARK_PASS) {
             this.status = "PASS";
         } else {
