@@ -176,7 +176,7 @@ public class BookImp {
             }
         }
         authorBook[cntAuthor] = arrBooks[numberBook - 1].getAuthor();
-        int arrNumberBookByYear[] = new int[cntAuthor + 1];
+        int arrNumberBookByAuthor[] = new int[cntAuthor + 1];
         for (int i = 0; i <= cntAuthor; i++) {
             int cntBookByAuthor = 0;
             for (int j = 0; j < numberBook; j++) {
@@ -184,7 +184,7 @@ public class BookImp {
                     cntBookByAuthor++;
                 }
             }
-            arrNumberBookByYear[i] = cntBookByAuthor;
+            arrNumberBookByAuthor[i] = cntBookByAuthor;
         }
         System.out.println("Thống kê số lượng sách theo tên tác giả:");
         for (int i = 0; i <= cntAuthor; i++) {
@@ -192,7 +192,7 @@ public class BookImp {
         }
         System.out.printf("\n");
         for (int i = 0; i <= cntAuthor; i++) {
-            System.out.printf("%20d", arrNumberBookByYear[i]);
+            System.out.printf("%20d", arrNumberBookByAuthor[i]);
         }
         System.out.printf("\n");
     }
