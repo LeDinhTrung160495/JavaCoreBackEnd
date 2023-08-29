@@ -4,6 +4,7 @@ import ra.entity.Student;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class StudentImpl {
     static List<Student> listStudent = new ArrayList<>();
@@ -146,51 +147,30 @@ public class StudentImpl {
     }
 
     public static void calListAge() {
-        for (Student student : listStudent
-        ) {
-            student.callAge();
-        }
+        //Java8
+        listStudent.forEach(student -> student.callAge());
         System.out.println("Đã tính xong tuổi cho tất cả các sinh viên");
     }
 
     public static void calAvg_rank() {
-        for (Student student : listStudent
-        ) {
-            student.calAvgMark_Rank();
-        }
+        //Java8
+        listStudent.forEach(student -> student.calAvgMark_Rank());
         System.out.println("Đã tính xong điểm trung bình và xếp loại cho tất cả các sinh viên");
     }
 
     public static void sortStudent() {
-        Collections.sort(listStudent, new Comparator<Student>() {
-            @Override
-            public int compare(Student o1, Student o2) {
-                return o1.getAge() - o2.getAge();
-            }
-        });
+        //Java8
+        listStudent.sort(Comparator.comparing(Student::getAge));
         System.out.println("Đã sắp xếp sinh viên theo tuổi tăng dần");
     }
 
     public static void statistic() {
-        int cntYeu = 0;
-        int cntTb = 0;
-        int cntKha = 0;
-        int cntGioi = 0;
-        int cntXS = 0;
-        for (Student student : listStudent
-        ) {
-            if (student.getClassification().equals("Yếu")) {
-                cntYeu++;
-            } else if (student.getClassification().equals("Trung bình")) {
-                cntTb++;
-            } else if (student.getClassification().equals("Khá")) {
-                cntKha++;
-            } else if (student.getClassification().equals("Giỏi")) {
-                cntGioi++;
-            } else {
-                cntXS++;
-            }
-        }
+        //Java8
+        int cntYeu = (int) listStudent.stream().filter(student -> student.getClassification().equals("Yếu")).count();
+        int cntTb = (int) listStudent.stream().filter(student -> student.getClassification().equals("Trung bình")).count();
+        int cntKha = (int) listStudent.stream().filter(student -> student.getClassification().equals("Khá")).count();
+        int cntGioi = (int) listStudent.stream().filter(student -> student.getClassification().equals("Giỏi")).count();
+        int cntXS = (int) listStudent.stream().filter(student -> student.getClassification().equals("Xuất sắc")).count();
         System.out.printf("Thống kê: Xuất sắc: %d - Giỏi: %d - Khá: %d - Trung bình: %d - Yếu: %d\n", cntXS, cntGioi, cntKha, cntTb, cntYeu);
     }
 
@@ -221,14 +201,14 @@ public class StudentImpl {
     public static void searchStudentByName(Scanner scanner) {
         System.out.println("Nhập vào tên sinh viên cần tìm: ");
         String studentName = scanner.nextLine();
-        for (Student student : listStudent
-        ) {
-            if (student.getStudentName().toLowerCase().contains(studentName.toLowerCase())) {
-                student.displayData();
-            }
-        }
+        //Java8
+        List<Student>searchedListStudentByName=listStudent.stream().filter(student ->student.getStudentName().toLowerCase().contains(studentName.toLowerCase())).collect(Collectors.toList());
+        searchedListStudentByName.forEach(student -> student.displayData());
     }
-    public static void displayListStudent(){
-        listStudent.stream().forEach(student -> student.displayData());
+
+    public static void displayListStudent() {
+        //Java8
+        listStudent.forEach(student -> student.displayData());
     }
 }
+
