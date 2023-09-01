@@ -10,7 +10,7 @@ public class StudentImpl {
     static List<Student> listStudent = new ArrayList<>();
 
     public static void main(String[] args) {
-        readDataFromFile();
+        readDataFromFile();//No
         Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("1. Nhập thông tin các sinh viên");
