@@ -1,9 +1,10 @@
 package ra.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Scanner;
 
-public class Category implements IEntity<Category, Book> {
+public class Category implements IEntity<Category, Book>, Serializable {
     private int catalogId;
     private String catalogName;
     private boolean catalogStatus;
@@ -48,39 +49,39 @@ public class Category implements IEntity<Category, Book> {
         this.catalogStatus = validateCatalogStatus(scanner);
     }
 
-    public static int validateCatalogId(Scanner scanner, List<Category> categoryList) {
+    public int validateCatalogId(Scanner scanner, List<Category> categoryList) {
         System.out.println("Nhập vào mã thể loại sách: ");
         do {
             String srtCatalogId = scanner.nextLine();
             // Kiểm tra không được để trống
-            if (srtCatalogId != null || srtCatalogId.trim().length() != 0) {
-                // Kiểm tra dữ liệu nhập vào là duy nhất
-                int intCatalogId = Integer.parseInt(srtCatalogId);
-                boolean isExistCatalogId = false;
-                for (Category category : categoryList
-                ) {
-                    if (category.catalogId == intCatalogId) {
-                        isExistCatalogId = true;
-                        break;
+            if (srtCatalogId != null && srtCatalogId.trim().length() != 0) {
+                //Kiểm tra kiểu dữ liệu
+                try {
+                    int intCatalogId = Integer.parseInt(srtCatalogId);
+                    // Kiểm tra dữ liệu nhập vào là duy nhất
+                    boolean isExistCatalogId = false;
+                    for (Category category : categoryList
+                    ) {
+                        if (category.catalogId == intCatalogId) {
+                            isExistCatalogId = true;
+                            break;
+                        }
                     }
-                }
-                if (!isExistCatalogId) {
-                    //Kiểm tra kiểu dữ liệu
-                    try {
+                    if (!isExistCatalogId) {
                         if (intCatalogId > 0) {
                             return intCatalogId;
                         } else {
                             System.err.println("Mã thể loại sách có giá trị lớn hơn 0, vui lòng nhập lại");
                         }
-                    } catch (NumberFormatException ex1) {
-                        System.out.println("Mã thể loại sách không phải định dạng số nguyên, vui lòng nhập lại");
-                    } catch (Exception ex) {
-                        System.err.println("Lỗi không xác định, vui lòng liên hệ hệ thống");
+                    } else {
+                        System.err.println("Mã thể loại sách đã trùng vui lòng nhập lại");
                     }
-                } else {
-                    System.err.println("Mã thể loại sách đã trùng vui lòng nhập lại");
-                }
 
+                } catch (NumberFormatException ex1) {
+                    System.err.println("Mã thể loại sách không phải định dạng số nguyên, vui lòng nhập lại");
+                } catch (Exception ex) {
+                    System.err.println("Lỗi không xác định, vui lòng liên hệ hệ thống");
+                }
             } else {
                 System.err.println("Mã thể loại sách bị bỏ trống, vui lòng nhập lại");
             }
@@ -92,7 +93,7 @@ public class Category implements IEntity<Category, Book> {
         do {
             String catalogName = scanner.nextLine();
             // Kiểm tra không được để trống
-            if (catalogName != null || catalogName.trim().length() != 0) {
+            if (catalogName != null && catalogName.trim().length() != 0) {
                 boolean isExistCatalogName = false;
                 for (Category category : categoryList
                 ) {
@@ -136,6 +137,20 @@ public class Category implements IEntity<Category, Book> {
     @Override
     public void output(List<Category> categoryList) {
         String strCatalogStatus = this.catalogStatus ? "Hoạt động" : "Không hoạt động";
-        System.out.printf("Mã thể loại sách: %d - Tên thể loại sách: %s - Trạng thái thể loại: %b\n", this.catalogId, this.catalogName, strCatalogStatus);
+//        System.out.printf("Mã thể loại sách: %d - Tên thể loại sách: %s - Trạng thái thể loại: %s\n", this.catalogId, this.catalogName, strCatalogStatus);
+        System.out.format("+--------------------+--------------------+---------------+%n");
+        System.out.printf("|%-20s|", "Mã thể loại sách");
+        System.out.printf("%-20s", "Tên thể loại sách");
+        System.out.printf("|%-15s|", "Trạng thái");
+        System.out.printf("\n");
+        System.out.format("+--------------------+--------------------+---------------+%n");
+        System.out.printf("|");
+        System.out.printf("%-20d", this.catalogId);
+        System.out.printf("|");
+        System.out.printf("%-20s", this.catalogName);
+        System.out.printf("|");
+        System.out.printf("%-15s", strCatalogStatus);
+        System.out.printf("|\n");
+        System.out.format("+--------------------+--------------------+---------------+%n");
     }
 }
